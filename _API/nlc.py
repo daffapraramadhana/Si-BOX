@@ -18,6 +18,7 @@ def door(parameter):
         door_open['door'] = parameter
         #print (door_open)
         r = requests.post(url, json = door_open)
+        
     
 
 def doorStatus(parameter):
