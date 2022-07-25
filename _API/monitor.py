@@ -1,8 +1,7 @@
 import json
 import psutil
 import shutil
-import wmi
-import platform
+
 
 
 #temperature
@@ -12,9 +11,16 @@ import platform
 
 #CPU usage
 def check_monitor():
+    bytesperGB = 1024 * 1024 * 1024
+    
     path = 'C:/Users'
     CPU_usage = psutil.cpu_percent()
-    MEMORY_used = shutil.disk_usage(path)
+    (total, used, free) = shutil.disk_usage(path)
+    MEMORY_used = {
+        "Total" : round((total)/bytesperGB,2),
+        "Used" : round((used)/bytesperGB,2),
+        "Free" : round((free)/bytesperGB,2)
+    }
     RAM_used = psutil.virtual_memory()[2]
     
     value = {
@@ -22,10 +28,12 @@ def check_monitor():
         "Memory usage" : MEMORY_used,
         "RAM usage" : RAM_used
     }
-    return json.dumps(value)
+    return (value)
 
 #
 #
 # CPU Temp --REQUIRES CPU TEMPERATURE TO BE RUNNING!--
 #
-print (check_monitor())
+a = check_monitor()
+
+print (a)
