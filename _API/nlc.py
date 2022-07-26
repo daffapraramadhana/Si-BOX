@@ -1,18 +1,16 @@
-import logging
 from flask import jsonify
 import requests
 import json
 
 url = 'http://192.168.0.10:8090/nlc02api'
 
-logger = logging.getLogger()
 
 door_status = {'cmd': 'doorstat', 'bus': 0}
 module_status = {'cmd': 'modstat', 'bus': 0}
 
 def door(parameter):
     if parameter is None:
-        print('Missing Parameter')
+        pass
     else:
         door_open = {'cmd': 'open', 'door': None }
         door_open['door'] = parameter
@@ -23,22 +21,22 @@ def door(parameter):
 
 def doorStatus(parameter):
     if parameter is None:
-        print('Missing Parameter')
+        pass
     else:
-        door_stat = {'cmd': 'open', 'bus': 0}
-        r = requests.post(url, json = door_stat)
+        door_status = {'cmd': 'doorstat', 'bus': 0}
+        r = requests.post(url, json = door_status)
 
         if r.ok:
             r.text
             stat = json.loads(r.text)
             parameter = parameter - 1
-            doorstat = stat["door"][parameter]
-            return jsonify(doorstat)
+            doorstatus = stat["door"][parameter]
+            return jsonify(doorstatus)
             
 
 def modStatus(parameter):
     if parameter is None:
-        print('Missing Parameter')
+        pass
     else:
         mod_stat = {'cmd': 'modstat', 'bus': 0}
         r = requests.post(url, json = mod_stat)
