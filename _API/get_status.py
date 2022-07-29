@@ -23,11 +23,9 @@ def doorStatus(parameter):
             data1 = json.loads(r1.text)
             data2 = json.loads(r2.text)
             df = pd.DataFrame(data1, data2)
-
-conn = sqlite3.connect("door.db")
-c = conn.cursor()
-
-df.to_sql("door_status",conn)
+            conn = sqlite3.connect("door.db")
+            c = conn.cursor()
+            df.to_sql("door_status",conn)
           
 
 def modStatus(parameter):

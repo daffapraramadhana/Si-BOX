@@ -13,21 +13,30 @@ def latency(s, e):
     return(latency)
     
 
-def response(re):
+def res(param):
+    
+    response = {
+        "code" : "0",
+        "latency" : "time",
+        "message" : "Success",
+        "param" : "None"
+    }
 
-    if re == 0:
+    if param == 0:
         response["code"] = "0"
-        response["message"] = "OK. Success"
+        response["message"] = "Success"
+        return (response)
 
-    elif re ==  100:
+    elif param ==  100:
         response["code"] = "100"
-        response["message"] = "ERROR. Missing response"
+        response["message"] = "ERROR. Missing Parameter"
         return(response)
 
-    elif re == 101:
-        response["code"] = "101"
-        response["message"] = "ERROR. Missing parameter"
-
+    elif param == 400:
+        response["code"] = "400"
+        response["message"] = "ERROR. Missing Object"
+        return (response)
+    
     return (response)
 
 
