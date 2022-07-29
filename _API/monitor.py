@@ -1,3 +1,4 @@
+import os
 import json
 import psutil
 import shutil
@@ -30,10 +31,11 @@ def check_monitor():
     }
     return (value)
 
-#
-#
 # CPU Temp --REQUIRES CPU TEMPERATURE TO BE RUNNING!--
 #
-a = check_monitor()
+# a = check_monitor()
 
-print (a)
+# print (a)
+
+def restart():
+    os.system('shutdown /r')
