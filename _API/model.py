@@ -12,7 +12,7 @@ class Door(db.Model):
     no = db.Column(db.Integer, primary_key=True)
     state = db.Column(db.String(20), nullable=False)
     created = db.Column(db.DateTime, default = datetime.now(tz=None))
-    updated = db.Column(db.DateTime, default = datetime.now(tz=None), onupdate = datetime.utcnow)
+    updated = db.Column(db.DateTime, default = datetime.now(tz=None), onupdate = datetime.now(tz=None))
 
     def __init__(self, no, state):
         self.no = no
