@@ -4,10 +4,12 @@ from flask_cors import CORS
 from sqlalchemy import DateTime
 from model import Door, db
 from os.path import exists as file_exists
-from datetime import datetime
 
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///door.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
 
 
@@ -16,8 +18,7 @@ import response
 import monitor
 import json
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///door.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 # app.config['']
 db.init_app(app)
 
@@ -82,7 +83,7 @@ def operations():
                 return jsonify(r)
 
         elif command == 'getallstat':
-            if param >= 1:
+            if param == 'doors':
                 doors = Door.query.all()
                 end = response.end_time()
                 r["latency"] = response.latency(start,end)
