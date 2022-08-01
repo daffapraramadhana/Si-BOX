@@ -16,7 +16,6 @@ CORS(app)
 import nlc
 import response
 import monitor
-import json
 
 
 # app.config['']
@@ -27,8 +26,8 @@ db.init_app(app)
 def create_data():
     path = "D:/Si BOX/_API/door.db"
     if file_exists(path):
-        print("Database Exist")
-    
+        pass
+        # print("Database Exist")
     else:
         db.create_all()
         #count_doors = nlc.countDoors(1)
