@@ -6,8 +6,10 @@ from model import Door, db
 from os.path import exists as file_exists
 from datetime import datetime
 
+
 app = Flask(__name__)
 CORS(app)
+
 
 import nlc
 import response
@@ -22,7 +24,8 @@ db.init_app(app)
 @app.before_first_request
 
 def create_data():
-    if file_exists('door.db'):
+    path = "D:/Si BOX/_API/door.db"
+    if file_exists(path):
         print("Database Exist")
     
     else:
@@ -38,10 +41,7 @@ def create_data():
             db.session.add(door)
             db.session.commit()
         
-            
-
-
-
+        
 @app.route('/sibox/ops', methods=['POST'])
 
 def operations():
@@ -55,7 +55,6 @@ def operations():
     d = dict()
 
     try :
-
         
         payload = request.json
         command = payload['cmd']
@@ -91,6 +90,18 @@ def operations():
                     "response" : r,
                     "data": ([door.to_json() for door in doors])
                 }
+                return jsonify(resp)
+
+        elif command == 'machinestat':
+            if param is not None:
+                d = monitor.check_monitor()
+                end = response.end_time()
+                r["latency"] = response.latency(start,end)
+                r["param"] = param
+                resp = {
+                    "response" : r,
+                    "data": d
+                    }
                 return jsonify(resp)
         
         elif command == 'reboot':
@@ -206,7 +217,6 @@ def service():
         }
     
     d = dict()
-
     try :
 
         start = response.start_time()
@@ -271,7 +281,6 @@ def service():
             #     }
             #     return jsonify(resp)
             
-
         elif command == 'machinestat':
             if param is not None:
                 d = monitor.check_monitor()
@@ -283,6 +292,7 @@ def service():
                     "data": d
                     }
                 return jsonify(resp)
+
         
         elif command == 'reboot':
             if param is not None:
@@ -292,8 +302,6 @@ def service():
                 r["param"] = param
                 return jsonify(r)
             
-        return jsonify(r)  
-          
     except :
         r["code"] = "400"
         r["message"] = "Missing Object."

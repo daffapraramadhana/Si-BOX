@@ -2,13 +2,9 @@ import os
 import json
 import psutil
 import shutil
+import wmi
+import pythoncom
 
-
-
-#temperature
-# w = wmi.WMI(namespace="root\wmi")
-# temperature_info = w.MSAcpi_ThermalZoneTemperature()[0]
-# print (temperature_info.CurrentTemperature)
 
 #CPU usage
 def check_monitor():
@@ -23,19 +19,18 @@ def check_monitor():
         "Free" : round((free)/bytesperGB,2)
     }
     RAM_used = psutil.virtual_memory()[2]
-    
+    #get temp
+    pythoncom.CoInitialize()
+    temp = wmi.WMI(namespace="root\\wmi")
+    TEMPERATURE = round((temp.MSAcpi_ThermalZoneTemperature()[0].CurrentTemperature / 10.0)-273.15)
+
     value = {
         "CPU usage" : CPU_usage,
         "Memory usage" : MEMORY_used,
-        "RAM usage" : RAM_used
+        "RAM usage" : RAM_used,
+        "Temperature" : TEMPERATURE
     }
     return (value)
-
-# CPU Temp --REQUIRES CPU TEMPERATURE TO BE RUNNING!--
-#
-# a = check_monitor()
-
-# print (a)
 
 def restart():
     os.system('shutdown /r')
