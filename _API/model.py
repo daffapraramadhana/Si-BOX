@@ -6,7 +6,6 @@ from sqlalchemy import update
 
 db = SQLAlchemy()
 
-
 class Door(db.Model):
     __tablename__ = 'doors'
     no = db.Column(db.Integer, primary_key=True)
