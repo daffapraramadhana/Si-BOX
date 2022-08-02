@@ -18,13 +18,13 @@ import response
 import monitor
 
 
-# app.config['']
 db.init_app(app)
 
 @app.before_first_request
 
 def create_data():
     path = "D:/Si BOX/_API/door.db"
+    # path = 'door.db'
     if file_exists(path):
         pass
         # print("Database Exist")
