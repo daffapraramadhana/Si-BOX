@@ -4,6 +4,7 @@ from flask_cors import CORS
 from sqlalchemy import DateTime
 from model import Door, db
 from os.path import exists as file_exists
+import logging
 
 
 app = Flask(__name__)
@@ -16,7 +17,7 @@ CORS(app)
 import nlc
 import response
 import monitor
-
+logger = logging.getLogger()
 
 db.init_app(app)
 
@@ -114,7 +115,7 @@ def operations():
             
     except :
         r["code"] = "400"
-        r["message"] = "Missing Object."
+        r["message"] = logger()
         end = response.end_time()
         r["latency"] = response.latency(start,end)
         return jsonify(r)
