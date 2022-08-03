@@ -17,7 +17,17 @@ CORS(app)
 import nlc
 import response
 import monitor
+import get_printer 
 logger = logging.getLogger()
+
+
+r = {
+    "code" : "0",
+    "latency" : "time",
+    "message" : "Success",
+    "param" : "None"
+}
+d = dict()
 
 db.init_app(app)
 
@@ -46,14 +56,6 @@ def create_data():
 @app.route('/sibox/ops', methods=['POST'])
 
 def operations():
-    r = {
-            "code" : "0",
-            "latency" : "time",
-            "message" : "Success",
-            "param" : "None"
-        }
-    
-    d = dict()
 
     try :
         
@@ -72,7 +74,6 @@ def operations():
                 nlc.openAll(param)
                 end = response.end_time()
                 r["latency"] = response.latency(start,end)
-                r["param"] = param
                 return jsonify(r)
 
             else:
@@ -98,7 +99,6 @@ def operations():
                 d = monitor.check_monitor()
                 end = response.end_time()
                 r["latency"] = response.latency(start,end)
-                r["param"] = param
                 resp = {
                     "response" : r,
                     "data": d
@@ -110,7 +110,6 @@ def operations():
                 monitor.restart()
                 end = response.end_time()
                 r["latency"] = response.latency(start,end)
-                r["param"] = param
                 return jsonify(r)
             
     except :
@@ -121,15 +120,8 @@ def operations():
         return jsonify(r)
 
 @app.route('/sibox/ops/edit', methods=['POST'])
+
 def edit():
-    r = {
-            "code" : "0",
-            "latency" : "time",
-            "message" : "Success",
-            "param" : "None"
-        }
-    
-    d = dict()
 
     try :
 
@@ -206,18 +198,36 @@ def edit():
         r["latency"] = response.latency(start,end)
         return jsonify(r)
 
+@app.route('/sibox/printer', methods=['POST'])
+
+def printer():
+    try: 
+
+        payload = request.json
+        start = response.start_time()
+        command = payload['cmd']
+        param = payload['param']
+        data = payload['data']
+
+        if command == 'print':
+            get_printer.printer(data)
+            end = response.end_time()
+            r["latency"] = response.latency(start,end)
+            r["param"] = param
+            return jsonify(r)
+
+    except:
+        r["code"] = "400"
+        r["message"] = "Missing Object."
+        end = response.end_time()
+        r["latency"] = response.latency(start,end)
+        return jsonify(r)            
+
+
 @app.route('/sibox', methods=['POST'])
 
 def service():
 
-    r = {
-            "code" : "0",
-            "latency" : "time",
-            "message" : "Success",
-            "param" : "None"
-        }
-    
-    d = dict()
     try :
 
         start = response.start_time()
@@ -294,7 +304,6 @@ def service():
                     }
                 return jsonify(resp)
 
-        
         elif command == 'reboot':
             if param is not None:
                 monitor.restart()
@@ -309,7 +318,8 @@ def service():
         end = response.end_time()
         r["latency"] = response.latency(start,end)
         return jsonify(r)
-       
-        
+              
 if __name__ == '__main__':
     app.run(debug=True)
+    # app.debug = True
+    # app.run(host="192.168.7.196", port = 5000)
