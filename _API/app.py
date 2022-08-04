@@ -34,7 +34,7 @@ db.init_app(app)
 @app.before_first_request
 
 def create_data():
-    path = "D:/Si BOX/_API/door.db"
+    path = "C:/Si-BOX/_API/door.db"
     # path = 'door.db'
     if file_exists(path):
         pass
@@ -211,9 +211,10 @@ def printer():
 
         if command == 'print':
             try:
+                get_printer.check(data)
                 IP = data['ip']
                 p = Network(f"{IP}")
-                if p.ok :
+                if p:
                     try:
                         get_printer.printer(data)
                         end = response.end_time()
