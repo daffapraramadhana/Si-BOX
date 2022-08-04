@@ -1,8 +1,8 @@
 from flask import Flask, request
 from flask import jsonify
 from flask_cors import CORS
-from sqlalchemy import DateTime
 from model import Door, db
+from escpos.printer import Network
 from os.path import exists as file_exists
 import logging
 
@@ -210,11 +210,30 @@ def printer():
         data = payload['data']
 
         if command == 'print':
-            get_printer.printer(data)
-            end = response.end_time()
-            r["latency"] = response.latency(start,end)
-            r["param"] = param
-            return jsonify(r)
+            try:
+                IP = data['ip']
+                p = Network(f"{IP}")
+                if p.ok :
+                    try:
+                        get_printer.printer(data)
+                        end = response.end_time()
+                        r["latency"] = response.latency(start,end)
+                        r["param"] = param
+                        return jsonify(r)
+
+                    except:
+                        r["code"] = "402"
+                        r["message"] = "IP not valid."
+                        end = response.end_time()
+                        r["latency"] = response.latency(start,end)
+                        return jsonify(r)
+            
+            except:
+                r["code"] = "401"
+                r["message"] = "Data not valid."
+                end = response.end_time()
+                r["latency"] = response.latency(start,end)
+                return jsonify(r)
 
     except:
         r["code"] = "400"
@@ -227,7 +246,6 @@ def printer():
 @app.route('/sibox', methods=['POST'])
 
 def service():
-
     try :
 
         start = response.start_time()
