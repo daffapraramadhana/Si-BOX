@@ -1,20 +1,32 @@
-from turtle import right
 from escpos.printer import Network
 from PIL import Image
 from datetime import datetime
 
+def check(data):
+    data = data
+    check = {
+        "ip" : "",
+        "no_resi" : "",
+        "asal" : "",
+        "tujuan": "",
+        "pengirim": "",
+        "penerima": "",
+        "no_hp": "",
+        "berat" : "",
+        "ongkir" : "",
+        "diskon": "",
+        "total" : "",
+        "merchant" : "",
+        "app_vers" : ""
+    }
+    if check.keys() in data.keys():
+        print ('data available')
+        pass
+    else:
+        return -1
+
+
 def printer(data):
-    # payload = {
-    # "Asal      ": data['asal'],
-    # "Tujuan    ": data['tujuan'],
-    # "Pengirim  ": data['pengirim'],
-    # "Penerima  ": data['penerima'],
-    # "No HP     ": data['no_hp'],
-    # "Berat     ": data['berat'],
-    # "Ongkir    ": data['ongkir'],
-    # "Diskon    ": data['diskon'],
-    # "Total Ongkir  ": data['total'],
-    # }
     IP = data['ip']
     merchant = data['merchant']
     app = data['app_vers']
@@ -28,7 +40,7 @@ def printer(data):
         p.image(new_logo)
         p.text('\n')
         p.text('\n')
-        gen_bar = data['no-resi']
+        gen_bar = data['no_resi']
         p.barcode(f"{gen_bar}", 'EAN13', 90, 3, '', '', align_ct = False)
         p.text('\n')
         p.set(align = 'left')
@@ -57,7 +69,7 @@ def printer(data):
         p.text('\n')
         p.set(align='center')
         p.text(info_date)
-        p.set(align=right)
+        p.set(align="right")
         p.text(f"{app}")
         p.cut()
 
