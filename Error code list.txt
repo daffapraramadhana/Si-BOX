@@ -1,3 +1,0 @@
-ERROR CODE LIST :
-0 Sukses
-100 

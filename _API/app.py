@@ -34,7 +34,7 @@ db.init_app(app)
 @app.before_first_request
 
 def create_data():
-    path = "C:/Si-BOX/_API/door.db"
+    path = "D:/Si BOX/_API/door.db"
     # path = 'door.db'
     if file_exists(path):
         pass
@@ -210,11 +210,8 @@ def printer():
         data = payload['data']
 
         if command == 'print':
-            try:
-                get_printer.check(data)
-                IP = data['ip']
-                p = Network(f"{IP}")
-                if p:
+            if get_printer.check_data(data) == True :
+            
                     try:
                         get_printer.printer(data)
                         end = response.end_time()
@@ -229,7 +226,7 @@ def printer():
                         r["latency"] = response.latency(start,end)
                         return jsonify(r)
             
-            except:
+            else:
                 r["code"] = "401"
                 r["message"] = "Data not valid."
                 end = response.end_time()
@@ -300,16 +297,6 @@ def service():
                     }
                 }
                 return jsonify(resp)
-
-            # if param >= 1:
-            #     d = nlc.doorStatus(param)
-            #     end = response.end_time()
-            #     r["latency"] = response.latency(start,end)
-            #     resp = {
-            #         "response" : r,
-            #         "data": d
-            #     }
-            #     return jsonify(resp)
             
         elif command == 'machinestat':
             if param is not None:

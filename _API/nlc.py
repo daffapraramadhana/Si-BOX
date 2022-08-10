@@ -3,7 +3,7 @@ import requests
 import json
 import time
 
-url = 'http://192.168.0.10:8090/nlc02api'
+url = 'http://192.168.7.220:8090/nlc02api'
 
 
 def door(parameter):

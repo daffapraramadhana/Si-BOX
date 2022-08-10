@@ -2,7 +2,8 @@ from escpos.printer import Network
 from PIL import Image
 from datetime import datetime
 
-def check(data):
+
+def check_data(data):
     data = data
     check = {
         "ip" : "",
@@ -19,9 +20,9 @@ def check(data):
         "merchant" : "",
         "app_vers" : ""
     }
-    if check.keys() in data.keys():
-        print ('data available')
-        pass
+    if all ( key in data for key in check):
+        # print("all data exist")
+        return True
     else:
         return -1
 
@@ -41,21 +42,21 @@ def printer(data):
         p.text('\n')
         p.text('\n')
         gen_bar = data['no_resi']
-        p.barcode(f"{gen_bar}", 'EAN13', 90, 3, '', '', align_ct = False)
+        p.barcode(f"{gen_bar}", 'UAC-A', 90, 3, '', '', align_ct = False)
         p.text('\n')
         p.set(align = 'left')
-        resi = "No Resi :  " + data['no_resi'] + "\n"
+        resi = "  No Resi :  " + data['no_resi'] + "\n"
         p.text(f"{resi}")
         p.text("  \n")
-        asal     = "Asal      :  " + data['asal'] + "\n"
-        tujuan   = "Tujuan    :  " + data['tujuan'] + "\n"
-        pengirim = "Pengirim  :  " + data['pengirim'] + "\n"
-        penerima = "Penerima  :  " + data['penerima'] + "\n"
-        no_hp    = "No HP     :  " + data['no_hp'] + "\n"
-        berat    = "Berat     :  " + data['berat'] + "\n"
-        ongkir   = "Ongkir    :  " + data['ongkir'] + "\n"
-        diskon   = "Diskon    :  " + data['diskon'] + "\n"
-        total    = "Total Ongkir : " + data['ongkir'] + "\n"
+        asal     = "  Asal      :  " + data['asal'] + "\n"
+        tujuan   = "  Tujuan    :  " + data['tujuan'] + "\n"
+        pengirim = "  Pengirim  :  " + data['pengirim'] + "\n"
+        penerima = "  Penerima  :  " + data['penerima'] + "\n"
+        no_hp    = "  No HP     :  " + data['no_hp'] + "\n"
+        berat    = "  Berat     :  " + data['berat'] + "\n"
+        ongkir   = "  Ongkir    :  " + data['ongkir'] + "\n"
+        diskon   = "  Diskon    :  " + data['diskon'] + "\n"
+        total    = "  Total Ongkir : " + data['ongkir'] + "\n"
         p.text(f"{asal}")
         p.text(f"{tujuan}")
         p.text(f"{pengirim}")
