@@ -74,6 +74,7 @@ def operations():
                 nlc.openAll(param)
                 end = response.end_time()
                 r["latency"] = response.latency(start,end)
+                r
                 return jsonify(r)
 
             else:
