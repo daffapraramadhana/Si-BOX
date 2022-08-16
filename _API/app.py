@@ -34,17 +34,17 @@ db.init_app(app)
 @app.before_first_request
 
 def create_data():
-    path = "D:/Si BOX/_API/door.db"
+    path = "C:/Si-BOX/_API/door.db"
     # path = 'door.db'
     if file_exists(path):
         pass
         # print("Database Exist")
     else:
         db.create_all()
-        #count_doors = nlc.countDoors(1)
-        #print("db created")
-        #for i in range (count_doors):
-        for i in range (32):
+        count_doors = nlc.countDoors(1)
+        print("db created")
+        for i in range (count_doors):
+        # for i in range (32):
             i += 1
             no = i
             state = 'ENABLE'
@@ -215,6 +215,8 @@ def printer():
                     try:
                         get_printer.printer(data)
                         end = response.end_time()
+                        r["code"] = "0"
+                        r["message"] = "Success"
                         r["latency"] = response.latency(start,end)
                         r["param"] = param
                         return jsonify(r)
