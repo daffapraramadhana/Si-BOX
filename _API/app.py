@@ -140,6 +140,7 @@ def edit():
                 door = Door.query.get(no)
                 if door is None:
                     end = response.end_time()
+                    r["code"] = "400"
                     r["latency"] = response.latency(start,end)
                     r["message"] = "Door not exist."
                     return jsonify(r)
@@ -160,6 +161,7 @@ def edit():
                 exists = db.session.query(db.session.query(Door).filter_by(no=no).exists()).scalar()
                 if exists :
                     end = response.end_time()
+                    r["code"] = "400"
                     r["latency"] = response.latency(start,end)
                     r["message"] = "Door exists"
                     return jsonify(r)
