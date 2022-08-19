@@ -70,7 +70,7 @@ def operations():
 
         if command == 'openall':
 
-            if param >= 1:
+            if param == 'doors':
                 nlc.openAll(param)
                 end = response.end_time()
                 r["latency"] = response.latency(start,end)

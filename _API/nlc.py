@@ -73,7 +73,7 @@ def openAll(parameter):
             i += 1
             door_open = {'cmd': 'open', 'door': None }
             door_open['door'] = i
-            print (door_open)
+            # print (door_open)
             r = requests.post(url, json=door_open)
             time.sleep(1)
 
